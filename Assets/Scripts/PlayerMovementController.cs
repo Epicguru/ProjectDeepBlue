@@ -5,7 +5,6 @@ using UnityEngine;
 public class PlayerMovementController : MonoBehaviour
 {
     public CharacterController Controller;
-    public PlayerVaulting Vaulting;
     public float GravityScale = 1f;
     public bool OnFloor;
     [Tooltip("If true, the input from the keyboard is passed directly to the movement calculation, without filtering. (acceleration, deccelration)")]
@@ -48,16 +47,6 @@ public class PlayerMovementController : MonoBehaviour
 
     private void Update()
     {
-        if (Vaulting.IsVaulting)
-        {
-            Controller.enabled = false;
-            return;
-        }
-        else
-        {
-            Controller.enabled = true;
-        }
-
         UpdateOnFloor();
         UpdateDowncasting();
 
@@ -80,7 +69,7 @@ public class PlayerMovementController : MonoBehaviour
         Vector3 gravityForce = Physics.gravity * GravityScale;
         gravityAccumulator += gravityForce * Time.deltaTime;
 
-        if (!Vaulting.CanVault && !Vaulting.IsVaulting && Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             if (OnFloor)
             {
